@@ -7,7 +7,7 @@ bp = Blueprint('user', __name__, url_prefix='/user')
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-    return '<h1>Hello, World!</h1>'
+    return render_template('home.html')
 # @bp.route('/login', methods=['GET', 'POST'])
 # def login():
 #     form = LoginForm()
