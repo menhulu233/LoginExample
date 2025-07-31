@@ -1,0 +1,116 @@
+{% extends "student/student_base.html" %}
+{% block title %}用户信息管理{% endblock %}
+{% block dashboard_content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="avatar-container">
+            {% if user.profile_image %}
+            <img src="{{ url_for('static', filename=user.profile_image) }}" alt="用户头像">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="默认头像">
+            {% endif %}
+            <div class="avatar-overlay">点击更改</div>
+        </div>
+        <div class="user-info">
+            <h1 class="user-name">{{ user.full_name or user.username }}</h1>
+            <span class="user-role role-{{ user.role }}">
+                {% if user.role == 'student' %}学生{% elif user.role == 'employer' %}企业{% else %}管理员{% endif %}
+            </span>
+            <p class="user-email">{{ user.email }}</p>
+        </div>
+    </div>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-section">
+            <h2 class="section-title">基本信息</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    {{ form.username.label }}
+                    {{ form.username(class="form-control") }}
+                    {% for error in form.username.errors %}
+                    <small style="color: #dc3545;">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.full_name.label }}
+                    {{ form.full_name(class="form-control") }}
+                    {% for error in form.full_name.errors %}
+                    <small style="color: #dc3545;">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class="form-control") }}
+                {% for error in form.email.errors %}
+                <small style="color: #dc3545;">{{ error }}</small>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2 class="section-title">账户设置</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    {{ form.role.label }}
+                    {{ form.role(class="form-select") }}
+                    {% for error in form.role.errors %}
+                    <small style="color: #dc3545;">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.status.label }}
+                    {{ form.status(class="form-select") }}
+                    {% for error in form.status.errors %}
+                    <small style="color: #dc3545;">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2 class="section-title">头像设置</h2>
+            <div class="form-group">
+                <div class="file-upload">
+                    {{ form.profile_image(class="form-control", id="avatarInput") }}
+                    <label for="avatarInput" class="file-label">
+                        <i class="fas fa-cloud-upload-alt"></i> 选择新头像
+                    </label>
+                </div>
+                <div class="file-info">
+                    支持 JPG, JPEG, PNG 格式，建议尺寸 200×200 像素
+                </div>
+                {% for error in form.profile_image.errors %}
+                <small style="color: #dc3545;">{{ error }}</small>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> 更新用户信息
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    // 当选择新文件时显示文件名
+    document.getElementById('avatarInput').addEventListener('change', function(e) {
+        const fileName = e.target.files[0] ? e.target.files[0].name : '未选择文件';
+        const fileLabel = document.querySelector('.file-label');
+        fileLabel.innerHTML = `<i class="fas fa-cloud-upload-alt"></i> ${fileName}`;
+    });
+    
+    // 点击头像触发文件选择
+    document.querySelector('.avatar-container').addEventListener('click', function() {
+        document.getElementById('avatarInput').click();
+    });
+</script>
+{% endblock %}

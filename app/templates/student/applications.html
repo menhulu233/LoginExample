@@ -1,0 +1,145 @@
+{% extends "student/student_base.html" %}
+{% block title %}我的实习申请 - 实习管理系统{% endblock %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+            <span>我的实习申请</span>
+        <span class="badge bg-primary">{{ total_records }} 条申请记录</span>
+    </div>
+</div>
+
+<!-- 筛选面板 -->
+<div class="filter-panel">
+    <form method="get" action="{{ url_for('student.applications') }}">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="filter-group">
+                    <label for="status">申请状态</label>
+                    <select id="status" name="status" class="form-select">
+                        {% for value, text in status_options %}
+                        <option value="{{ value }}" {% if value == current_status %}selected{% endif %}>{{ text }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="filter-group">
+                    <label for="search">搜索实习/公司</label>
+                    <div class="search-container">
+                        <input type="text" class="form-control" id="search" name="search" 
+                               placeholder="输入实习职位或公司名称..." value="{{ search_query }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 申请列表 -->
+{% if applications %}
+    {% for app in applications %}
+    <div class="application-card">
+        <div class="application-header">
+            <div>
+                <h3 class="application-title">{{ app.title }}</h3>
+                <div class="company-name">{{ app.company_name }}</div>
+            </div>
+            <div>
+                <span class="status-badge status-{{ app.status }}">{{ app.status_text }}</span>
+            </div>
+        </div>
+        
+        <div class="application-meta">
+            <div class="meta-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ app.location }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>申请截止: {{ app.deadline.strftime('%Y-%m-%d') }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-clock"></i>
+                <span>申请时间: {{ app.applied_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            </div>
+        </div>
+        
+        <div class="card-footer">
+            <div class="applied-date">
+                <i class="fas fa-history"></i> 
+                最后更新: {{ app.applied_at.strftime('%Y-%m-%d %H:%M') }}
+            </div>
+            <div>
+                <a href="{{ url_for('student.application_detail', internship_id=app.internship_id) }}" 
+                   class="btn btn-outline-primary">
+                    查看详情
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+    <!-- 分页控件 -->
+    {% if total_pages > 1 %}
+    <div class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link" 
+                   href="{{ url_for('student.applications', page=page-1, status=current_status, search=search_query) }}">
+                    &laquo; 上一页
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo; 上一页</span>
+            </li>
+            {% endif %}
+            
+            {% for p in range(1, total_pages+1) %}
+                {% if p >= page-2 and p <= page+2 or p == 1 or p == total_pages %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" 
+                       href="{{ url_for('student.applications', page=p, status=current_status, search=search_query) }}">
+                        {{ p }}
+                    </a>
+                </li>
+                {% elif p == page-3 or p == page+3 %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page < total_pages %}
+            <li class="page-item">
+                <a class="page-link" 
+                   href="{{ url_for('student.applications', page=page+1, status=current_status, search=search_query) }}">
+                    下一页 &raquo;
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">下一页 &raquo;</span>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+    
+{% else %}
+    <div class="empty-state">
+        <i class="fas fa-file-alt"></i>
+        <h5>暂无申请记录</h5>
+        <p>您还没有提交任何实习申请，快去浏览实习岗位并提交申请吧！</p>
+        <a href="{{ url_for('student.internships') }}" class="btn btn-primary">
+            <i class="fas fa-briefcase"></i> 浏览实习岗位
+        </a>
+    </div>
+{% endif %}
+{% endblock %}

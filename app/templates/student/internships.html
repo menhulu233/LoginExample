@@ -1,0 +1,170 @@
+{% extends "student/student_base.html" %}
+{% block title %}实习岗位列表 - 实习管理系统{% endblock %}
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+            <span>实习岗位列表</span>
+        <span class="badge bg-primary">{{ total_records }} 个岗位</span>
+    </div>
+</div>
+<!-- 筛选面板 -->
+<div class="filter-panel">
+    <div class="filter-header">
+        <h5>筛选实习</h5>
+    </div>
+    
+    <form method="get" action="{{ url_for('student.internships') }}">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="filter-group">
+                    <label for="location">地点</label>
+                    <select id="location" name="location" class="form-select">
+                        <option value="">所有地点</option>
+                        {% for loc in locations %}
+                        <option value="{{ loc }}" {% if loc == current_location %}selected{% endif %}>{{ loc }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="filter-group">
+                    <label for="duration">实习时长</label>
+                    <select id="duration" name="duration" class="form-select">
+                        <option value="">所有时长</option>
+                        {% for dur in durations %}
+                        <option value="{{ dur }}" {% if dur == current_duration %}selected{% endif %}>{{ dur }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="filter-group">
+                    <label for="sort">排序方式</label>
+                    <select id="sort" name="sort" class="form-select">
+                        <option value="deadline_asc">截止日期（最近优先）</option>
+                        <option value="deadline_desc">截止日期（最晚优先）</option>
+                        <option value="newest">最新发布</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="filter-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-filter"></i> 应用筛选
+            </button>
+            <a href="{{ url_for('student.internships') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-sync"></i> 重置筛选
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- 实习列表 -->
+{% if internships %}
+    {% for internship in internships %}
+    <div class="internship-card">
+        <div class="internship-header">
+            <div>
+                <h3 class="internship-title">{{ internship.title }}</h3>
+                <div class="company-name">{{ internship.company_name }}</div>
+            </div>
+            <div>
+                <span class="badge bg-success">{{ internship.number_of_opening }} 个名额</span>
+            </div>
+        </div>
+        
+        <div class="internship-meta">
+            <div class="meta-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ internship.location }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-clock"></i>
+                <span>{{ internship.duration }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>截止: {{ internship.deadline.strftime('%Y-%m-%d') }}</span>
+            </div>
+        </div>
+        
+        <div class="skills">
+            {% if internship.skills_required %}
+                {% for skill in internship.skills_required.split(',') %}
+                <span class="skill-tag">{{ skill.strip() }}</span>
+                {% endfor %}
+            {% else %}
+                <span class="text-muted">未指定技能要求</span>
+            {% endif %}
+        </div>
+        
+        <p class="mb-3">{{ internship.description|truncate(200) }}</p>
+        
+        <div class="card-footer">
+            <div class="stipend">
+                <i class="fas fa-money-bill-wave"></i> 
+                津贴: {{ internship.stipend or '面议' }}
+            </div>
+            <div>
+                <a href="{{ url_for('student.internship_detail', internship_id=internship.internship_id) }}" 
+                   class="btn btn-primary">
+                    查看详情
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+    <!-- 分页控件 -->
+    {% if total_pages > 1 %}
+    <div class="pagination-container">
+        <ul class="pagination">
+            {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('student.internships', page=page-1, location=current_location, duration=current_duration) }}">
+                    &laquo; 上一页
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo; 上一页</span>
+            </li>
+            {% endif %}
+            
+            {% for p in range(1, total_pages+1) %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('student.internships', page=p, location=current_location, duration=current_duration) }}">
+                    {{ p }}
+                </a>
+            </li>
+            {% endfor %}
+            
+            {% if page < total_pages %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('student.internships', page=page+1, location=current_location, duration=current_duration) }}">
+                    下一页 &raquo;
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">下一页 &raquo;</span>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+    
+{% else %}
+    <div class="empty-state">
+        <i class="fas fa-briefcase"></i>
+        <h5>暂无实习岗位</h5>
+        <p>当前没有符合筛选条件的实习岗位，请尝试调整筛选条件或稍后再来查看。</p>
+        <a href="{{ url_for('student.internships') }}" class="btn btn-primary">
+            重置筛选条件
+        </a>
+    </div>
+{% endif %}
+{% endblock %}

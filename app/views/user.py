@@ -115,7 +115,7 @@ def forgot_password():
 def logout():
     session.clear()
     flash('您已成功登出', 'success')
-    return redirect(url_for('login'))
+    return redirect(url_for('user.login'))
 
 
 @bp.route('/dashboard')

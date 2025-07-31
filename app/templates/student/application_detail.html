@@ -1,0 +1,210 @@
+{% extends "student/student_base.html" %}
+{% block title %}{{ application.title }} - 申请详情{% endblock %}
+{% block dashboard_content %}
+<div class="application-detail">
+    <div class="detail-header">
+        <h1 class="detail-title">{{ application.title }}</h1>
+        <div class="company-info">
+            <div>
+                <div class="company-name">{{ application.company_name }}</div>
+                <div class="company-website">
+                    <a href="{{ application.company_website }}" target="_blank">
+                        <i class="fas fa-globe"></i> {{ application.company_website }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-container">
+            <span class="status-badge status-{{ application.status }}">{{ application.status_text }}</span>
+            <span class="applied-date">
+                <i class="fas fa-calendar-alt"></i> 
+                申请日期: {{ application.applied_date }}
+            </span>
+        </div>
+        
+        <div class="meta-grid">
+            <div class="meta-card">
+                <div class="meta-label">实习地点</div>
+                <div class="meta-value">
+                    <i class="fas fa-map-marker-alt"></i> {{ application.location }}
+                </div>
+            </div>
+            
+            <div class="meta-card">
+                <div class="meta-label">实习时长</div>
+                <div class="meta-value">
+                    <i class="fas fa-clock"></i> {{ application.duration }}
+                </div>
+            </div>
+            
+            <div class="meta-card">
+                <div class="meta-label">实习津贴</div>
+                <div class="meta-value">
+                    <i class="fas fa-money-bill-wave"></i> {{ application.stipend or '面议' }}
+                </div>
+            </div>
+            
+            <div class="meta-card">
+                <div class="meta-label">申请截止</div>
+                <div class="meta-value">
+                    <i class="fas fa-hourglass-end"></i> {{ application.deadline.strftime('%Y-%m-%d') }}
+                </div>
+            </div>
+        </div>
+        
+        {% if application.feedback %}
+        <div class="feedback-section">
+            <div class="feedback-header">
+                <i class="fas fa-comment-alt"></i>
+                <h4>企业反馈</h4>
+            </div>
+            <div class="feedback-content">
+                {{ application.feedback|safe }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- 申请进度时间线 -->
+    <div class="section">
+        <h3 class="section-title">申请进度</h3>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-paper-plane"></i>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-date">{{ application.applied_date }}</div>
+                    <div class="timeline-title">申请已提交</div>
+                    <div class="timeline-text">您已成功提交实习申请，等待企业审核</div>
+                </div>
+            </div>
+            
+            {% if application.status in ['reviewed', 'accepted', 'rejected'] %}
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-date">
+                        {% if application.updated_at %}
+                            {{ application.updated_at.strftime('%Y年%m月%d日') }}
+                        {% else %}
+                            {{ application.applied_date }}
+                        {% endif %}
+                    </div>
+                    <div class="timeline-title">申请已查看</div>
+                    <div class="timeline-text">企业已查看您的申请，正在评估中</div>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if application.status == 'accepted' %}
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-date">
+                        {% if application.updated_at %}
+                            {{ application.updated_at.strftime('%Y年%m月%d日') }}
+                        {% else %}
+                            {{ application.applied_date }}
+                        {% endif %}
+                    </div>
+                    <div class="timeline-title">申请已通过</div>
+                    <div class="timeline-text">恭喜！您的申请已通过，请等待企业联系</div>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if application.status == 'rejected' %}
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-date">
+                        {% if application.updated_at %}
+                            {{ application.updated_at.strftime('%Y年%m月%d日') }}
+                        {% else %}
+                            {{ application.applied_date }}
+                        {% endif %}
+                    </div>
+                    <div class="timeline-title">申请未通过</div>
+                    <div class="timeline-text">您的申请未通过，请查看企业反馈</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="section">
+        <h3 class="section-title">申请信息</h3>
+        
+        <div class="resume-section">
+            <div class="resume-icon">
+                <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="resume-info">
+                <div class="resume-name">个人简历</div>
+                <div class="resume-details">
+                    {% if application.resume_path %}
+                    <a href="{{ url_for('static', filename='uploads/resumes/' + application.resume_path) }}" 
+                       target="_blank" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-download"></i> 下载简历
+                    </a>
+                    <span class="text-muted ms-2">上次更新: 2023-06-15</span>
+                    {% else %}
+                    <span class="text-danger">未上传简历</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-content">
+            <h5>个人信息</h5>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <strong>姓名:</strong> {{ current_user.full_name }}
+                </div>
+                <div class="col-md-4">
+                    <strong>学校:</strong> {{ application.university }}
+                </div>
+                <div class="col-md-4">
+                    <strong>专业:</strong> {{ application.course }}
+                </div>
+            </div>
+            
+            <h5>申请说明</h5>
+            <p>您提交申请时未添加附加说明。</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h3 class="section-title">实习岗位描述</h3>
+        <div class="section-content">
+            {{ application.description|safe }}
+        </div>
+    </div>
+    
+    <div class="action-buttons">
+        <a href="{{ url_for('student.applications') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> 返回列表
+        </a>
+        
+        {% if application.status == 'submitted' %}
+        <button class="btn btn-outline-danger">
+            <i class="fas fa-times"></i> 撤回申请
+        </button>
+        {% endif %}
+        
+        <a href="{{ url_for('student.internship_detail', internship_id=application.internship_id) }}" 
+           class="btn btn-primary">
+            <i class="fas fa-briefcase"></i> 查看实习详情
+        </a>
+    </div>
+</div>
+{% endblock %}

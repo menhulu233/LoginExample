@@ -1,0 +1,108 @@
+{% extends "student/student_base.html" %}
+{% block title %}学生信息管理{% endblock %}
+{% block dashboard_content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="student-icon">
+            <i class="fas fa-user-graduate"></i>
+        </div>
+        <div class="student-info">
+            <h1 class="student-name">{{ student.full_name or student.username }}</h1>
+            <div class="student-university">{{ student.university or '未设置大学' }}</div>
+            <div class="student-course">{{ student.course or '未设置专业' }}</div>
+        </div>
+    </div>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-section">
+            <h2 class="section-title">学术信息</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    {{ form.university.label }}
+                    {{ form.university(class="form-control") }}
+                    {% for error in form.university.errors %}
+                    <small style="color: #dc3545;">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.course.label }}
+                    {{ form.course(class="form-control") }}
+                    {% for error in form.course.errors %}
+                    <small style="color: #dc3545;">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2 class="section-title">简历管理</h2>
+            <div class="form-group">
+                <div class="file-upload">
+                    {{ form.resume(class="form-control", id="resumeInput") }}
+                    <label for="resumeInput" class="file-label">
+                        <i class="fas fa-cloud-upload-alt"></i> 上传新简历
+                    </label>
+                </div>
+                <div class="file-info">
+                    仅支持 PDF 格式，最大文件大小 5MB
+                </div>
+                {% for error in form.resume.errors %}
+                <small style="color: #dc3545;">{{ error }}</small>
+                {% endfor %}
+            </div>
+            
+            {% if student.resume_path %}
+            <div class="resume-container">
+                <div class="resume-header">
+                    <div class="resume-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="resume-info">
+                        <div class="resume-name">个人简历.pdf</div>
+                        <div>上传时间: 2023-06-15 | 文件大小: 1.2MB</div>
+                    </div>
+                    <div class="resume-actions">
+                        <a href="{{ url_for('static', filename=student.resume_path) }}" 
+                           target="_blank" class="btn-download">
+                            <i class="fas fa-download"></i> 下载
+                        </a>
+                        <button type="button" class="btn-delete" id="deleteResume">
+                            <i class="fas fa-trash"></i> 删除
+                        </button>
+                    </div>
+                </div>
+                <p>此简历将作为您申请实习的默认简历。</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> 更新学生信息
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // 当选择新文件时显示文件名
+    document.getElementById('resumeInput').addEventListener('change', function(e) {
+        const fileName = e.target.files[0] ? e.target.files[0].name : '未选择文件';
+        const fileLabel = document.querySelector('.file-label');
+        fileLabel.innerHTML = `<i class="fas fa-cloud-upload-alt"></i> ${fileName}`;
+    });
+    
+    // 删除简历处理
+    document.getElementById('deleteResume').addEventListener('click', function() {
+        if (confirm('确定要删除当前简历吗？删除后将无法恢复。')) {
+            // 这里应该发送AJAX请求到服务器删除简历
+            alert('简历删除功能需要后端实现');
+        }
+    });
+</script>
+{% endblock %}
