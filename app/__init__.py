@@ -1,13 +1,14 @@
 from flask import Flask
 from app.db import init_db
 from config import Config
-
-
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     # 初始化数据库
     init_db(app)
+    bcrypt.init_app(app)
     # 注册蓝图
     from app.views import admin
     from app.views import employer
