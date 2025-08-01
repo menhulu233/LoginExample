@@ -1,10 +1,293 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "employer/employer_base.html" %}
+{% block title %}企业首页{% endblock %}
+{% block dashboard_content %}
+<div class="page-header">
+    <h1 class="page-title">实习申请管理</h1>
+    <button class="btn-primary">
+        <i class="fas fa-plus"></i> 发布新实习
+    </button>
+</div>
 
-</body>
-</html>
+<!-- 统计卡片 -->
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-icon icon-blue">
+            <i class="fas fa-briefcase"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-value">8</div>
+            <div class="stat-label">发布的实习</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon icon-green">
+            <i class="fas fa-file-alt"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-value">42</div>
+            <div class="stat-label">收到的申请</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon icon-orange">
+            <i class="fas fa-user-check"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-value">6</div>
+            <div class="stat-label">已录取实习生</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon icon-purple">
+            <i class="fas fa-star"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-value">4.8</div>
+            <div class="stat-label">平均评价</div>
+        </div>
+    </div>
+</div>
+
+<!-- 筛选面板 -->
+<div class="filter-panel">
+    <div class="filter-header">
+        <h5>筛选申请</h5>
+        <span>共 42 个申请</span>
+    </div>
+
+    <div class="filter-form">
+        <div class="form-group">
+            <label for="search">申请人/职位</label>
+            <input type="text" class="form-control" id="search" placeholder="输入关键词...">
+        </div>
+
+        <div class="form-group">
+            <label for="status">申请状态</label>
+            <select class="form-select" id="status">
+                <option value="">所有状态</option>
+                <option value="submitted">已提交</option>
+                <option value="reviewed">已查看</option>
+                <option value="accepted">已录取</option>
+                <option value="rejected">已拒绝</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="internship">实习职位</label>
+            <select class="form-select" id="internship">
+                <option value="">所有职位</option>
+                <option value="frontend">前端开发实习生</option>
+                <option value="backend">后端开发实习生</option>
+                <option value="design">UI/UX设计实习生</option>
+                <option value="data">数据分析实习生</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <button class="btn-filter">
+                <i class="fas fa-filter"></i> 筛选申请
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 申请列表 -->
+<div class="applications-list">
+    <h4 class="mb-3">申请列表</h4>
+
+    <div class="application-card">
+        <div class="application-header">
+            <div>
+                <h3 class="application-title">前端开发实习生</h3>
+                <p class="student-name">李明 | 北京大学 | 计算机科学</p>
+                <div class="application-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user"></i> 学生ID: S1001
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i> 申请时间: 2023-06-15
+                    </div>
+                </div>
+            </div>
+            <span class="status-badge status-reviewed">已查看</span>
+        </div>
+
+        <p class="mb-3">对前端开发有浓厚兴趣，熟练掌握HTML、CSS、JavaScript和React框架，有2个相关项目经验...</p>
+
+        <div class="action-buttons">
+            <button class="btn-action btn-accept" onclick="acceptApplication(1001)">
+                <i class="fas fa-check"></i> 接受申请
+            </button>
+            <button class="btn-action btn-reject" onclick="openFeedbackModal(1001)">
+                <i class="fas fa-times"></i> 拒绝申请
+            </button>
+            <button class="btn-action" style="background-color: var(--primary); color: white;">
+                <i class="fas fa-eye"></i> 查看详情
+            </button>
+        </div>
+    </div>
+
+    <div class="application-card">
+        <div class="application-header">
+            <div>
+                <h3 class="application-title">后端开发实习生</h3>
+                <p class="student-name">张伟 | 清华大学 | 软件工程</p>
+                <div class="application-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user"></i> 学生ID: S1002
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i> 申请时间: 2023-06-18
+                    </div>
+                </div>
+            </div>
+            <span class="status-badge status-submitted">已提交</span>
+        </div>
+
+        <p class="mb-3">熟练掌握Java、Spring Boot和MySQL，有微服务开发经验，参与过校园电商平台开发...</p>
+
+        <div class="action-buttons">
+            <button class="btn-action btn-accept" onclick="acceptApplication(1002)">
+                <i class="fas fa-check"></i> 接受申请
+            </button>
+            <button class="btn-action btn-reject" onclick="openFeedbackModal(1002)">
+                <i class="fas fa-times"></i> 拒绝申请
+            </button>
+            <button class="btn-action" style="background-color: var(--primary); color: white;">
+                <i class="fas fa-eye"></i> 查看详情
+            </button>
+        </div>
+    </div>
+
+    <div class="application-card">
+        <div class="application-header">
+            <div>
+                <h3 class="application-title">UI/UX设计实习生</h3>
+                <p class="student-name">王芳 | 中国美术学院 | 视觉传达</p>
+                <div class="application-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user"></i> 学生ID: S1003
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i> 申请时间: 2023-06-10
+                    </div>
+                </div>
+            </div>
+            <span class="status-badge status-accepted">已录取</span>
+        </div>
+
+        <p class="mb-3">拥有优秀的视觉设计能力，熟练掌握Figma、Adobe XD等设计工具，有3个商业项目设计经验...</p>
+
+        <div class="action-buttons">
+            <button class="btn-action" style="background-color: var(--primary); color: white;">
+                <i class="fas fa-eye"></i> 查看详情
+            </button>
+            <button class="btn-action" style="background-color: #6c757d; color: white;">
+                <i class="fas fa-envelope"></i> 发送通知
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 实习列表 -->
+<div class="internships-list mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>发布的实习职位</h4>
+        <a href="#" class="btn-view">
+            <i class="fas fa-list"></i> 查看全部
+        </a>
+    </div>
+
+    <div class="internship-card">
+        <div class="internship-header">
+            <div>
+                <h3 class="internship-title">前端开发实习生</h3>
+                <p class="company-name">科技创新有限公司</p>
+            </div>
+            <span class="deadline urgent">
+                                <i class="fas fa-clock"></i> 截止: 2023-07-10
+                            </span>
+        </div>
+
+        <div class="internship-meta">
+            <div class="meta-item">
+                <i class="fas fa-map-marker-alt"></i> 北京 · 可远程
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-clock"></i> 3个月
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-user-friends"></i> 5个名额
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-id-badge"></i> 职位ID: I2001
+            </div>
+        </div>
+
+        <div class="skills">
+            <span class="skill-tag">HTML/CSS</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">Vue.js</span>
+            <span class="skill-tag">响应式设计</span>
+        </div>
+
+        <p>负责公司官网及后台管理系统前端开发，参与产品需求分析，与设计团队协作实现用户界面...</p>
+
+        <div class="card-footer">
+            <div class="stipend">¥250/天</div>
+            <a href="#" class="btn-view">
+                <i class="fas fa-eye"></i> 查看申请
+            </a>
+        </div>
+    </div>
+
+    <div class="internship-card">
+        <div class="internship-header">
+            <div>
+                <h3 class="internship-title">数据分析实习生</h3>
+                <p class="company-name">科技创新有限公司</p>
+            </div>
+            <span class="deadline">
+                                <i class="fas fa-clock"></i> 截止: 2023-07-20
+                            </span>
+        </div>
+
+        <div class="internship-meta">
+            <div class="meta-item">
+                <i class="fas fa-map-marker-alt"></i> 上海
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-clock"></i> 6个月
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-user-friends"></i> 3个名额
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-id-badge"></i> 职位ID: I2002
+            </div>
+        </div>
+
+        <div class="skills">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">数据可视化</span>
+            <span class="skill-tag">统计学</span>
+            <span class="skill-tag">机器学习</span>
+        </div>
+
+        <p>协助数据团队进行数据清洗、处理和分析，创建数据报告和可视化仪表板，支持业务决策...</p>
+
+        <div class="card-footer">
+            <div class="stipend">¥300/天</div>
+            <a href="#" class="btn-view">
+                <i class="fas fa-eye"></i> 查看申请
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

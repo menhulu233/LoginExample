@@ -1,0 +1,158 @@
+{% extends "employer/employer_base.html" %}
+
+{% block title %}{% if internship %}编辑实习{% else %}发布新实习{% endif %} - 实习管理系统{% endblock %}
+
+{% block dashboard_content %}
+<div class="content-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            {% if internship %}编辑实习岗位{% else %}发布新实习岗位{% endif %}
+        </h1>
+        <a href="{{ url_for('employer.internships') }}" class="btn-view">
+            <i class="fas fa-arrow-left"></i> 返回实习列表
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="{% if internship %}{{ url_for('employer.edit_internship', internship_id=internship.internship_id) }}{% else %}{{ url_for('employer.new_internship') }}{% endif %}">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label for="title">职位标题 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="title" name="title" 
+                                   value="{{ internship.title if internship else '' }}" 
+                                   placeholder="例如：前端开发实习生" required>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label for="location">工作地点 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="location" name="location" 
+                                   value="{{ internship.location if internship else '' }}" 
+                                   placeholder="例如：北京市海淀区" required>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="duration">实习时长</label>
+                                    <input type="text" class="form-control" id="duration" name="duration" 
+                                           value="{{ internship.duration if internship else '' }}" 
+                                           placeholder="例如：3个月">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="number_of_opening">招聘人数</label>
+                                    <input type="number" class="form-control" id="number_of_opening" 
+                                           name="number_of_opening" 
+                                           value="{{ internship.number_of_opening if internship else '' }}" 
+                                           min="1" placeholder="例如：5">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="deadline">截止日期 <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="deadline" name="deadline" 
+                                           value="{{ internship.deadline.strftime('%Y-%m-%d') if internship and internship.deadline else '' }}" 
+                                           required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="stipend">薪资待遇</label>
+                                    <input type="text" class="form-control" id="stipend" name="stipend" 
+                                           value="{{ internship.stipend if internship else '' }}" 
+                                           placeholder="例如：200元/天">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label for="skills_required">所需技能 <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="skills_required" name="skills_required" 
+                                      rows="3" placeholder="请输入所需的技能，用逗号分隔" required>{{ internship.skills_required if internship else '' }}</textarea>
+                            <small class="form-text text-muted">例如：HTML, CSS, JavaScript, React</small>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label for="additional_req">其他要求</label>
+                            <textarea class="form-control" id="additional_req" name="additional_req" 
+                                      rows="3" placeholder="请输入其他要求，如专业、年级等">{{ internship.additional_req if internship else '' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group mb-4">
+                    <label for="description">职位描述 <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="description" name="description" 
+                              rows="6" placeholder="详细描述职位职责、要求、公司福利等信息" required>{{ internship.description if internship else '' }}</textarea>
+                </div>
+                
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="reset" class="btn btn-secondary mr-2">重置</button>
+                    <button type="submit" class="btn btn-primary">
+                        {% if internship %}更新实习岗位{% else %}发布实习岗位{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>实习岗位发布指南</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success mr-2"></i> 
+                    职位标题应简洁明了，包含职位名称和"实习生"字样
+                </li>
+                <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success mr-2"></i> 
+                    工作地点需精确到城市或区域，可注明是否支持远程
+                </li>
+                <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success mr-2"></i> 
+                    薪资待遇应明确说明（如：200元/天 或 面议）
+                </li>
+                <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success mr-2"></i> 
+                    所需技能应列出主要技术栈或专业要求
+                </li>
+                <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success mr-2"></i> 
+                    职位描述应包含具体职责、要求和公司福利
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 设置截止日期的最小值为今天
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('deadline').min = today;
+        
+        // 自动格式化技能输入
+        const skillsInput = document.getElementById('skills_required');
+        skillsInput.addEventListener('blur', function() {
+            // 移除多余空格，用逗号分隔
+            let skills = this.value.split(',')
+                .map(skill => skill.trim())
+                .filter(skill => skill.length > 0)
+                .join(', ');
+            this.value = skills;
+        });
+    });
+</script>
+{% endblock %}

@@ -1,10 +1,392 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "admin/admin_base.html" %}
+{% block title %}管理首页{% endblock %}
+{% block dashboard_content %}
+ <div class="page-header">
+                <h1 class="page-title">用户管理</h1>
+                <button class="btn-primary">
+                    <i class="fas fa-plus"></i> 添加用户
+                </button>
+            </div>
 
-</body>
-</html>
+            <!-- 统计卡片 -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">128</div>
+                        <div class="stat-label">总用户数</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-green">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">72</div>
+                        <div class="stat-label">学生用户</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-orange">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">42</div>
+                        <div class="stat-label">企业用户</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-purple">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">14</div>
+                        <div class="stat-label">管理员</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 筛选面板 -->
+            <div class="filter-panel">
+                <div class="filter-header">
+                    <h5>筛选用户</h5>
+                </div>
+                <div class="filter-form">
+                    <div class="form-group">
+                        <label for="searchName">姓名</label>
+                        <input type="text" id="searchName" class="form-control" placeholder="输入姓名...">
+                    </div>
+                    <div class="form-group">
+                        <label for="roleFilter">角色</label>
+                        <select id="roleFilter" class="form-select">
+                            <option value="">所有角色</option>
+                            <option value="student">学生</option>
+                            <option value="employer">企业</option>
+                            <option value="admin">管理员</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="statusFilter">状态</label>
+                        <select id="statusFilter" class="form-select">
+                            <option value="">所有状态</option>
+                            <option value="active">活跃</option>
+                            <option value="inactive">未激活</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button class="btn-filter">
+                            <i class="fas fa-filter"></i> 筛选
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 用户列表 -->
+            <div class="card">
+                <div class="card-body">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>姓名</th>
+                                <th>邮箱</th>
+                                <th>角色</th>
+                                <th>状态</th>
+                                <th>注册时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1001</td>
+                                <td>张明</td>
+                                <td>zhangming@example.com</td>
+                                <td><span class="role-student">学生</span></td>
+                                <td><span class="status-active">活跃</span></td>
+                                <td>2023-05-12</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-ban"></i> 禁用</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1002</td>
+                                <td>李华</td>
+                                <td>lihua@example.com</td>
+                                <td><span class="role-employer">企业</span></td>
+                                <td><span class="status-active">活跃</span></td>
+                                <td>2023-06-18</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-ban"></i> 禁用</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1003</td>
+                                <td>王芳</td>
+                                <td>wangfang@example.com</td>
+                                <td><span class="role-admin">管理员</span></td>
+                                <td><span class="status-active">活跃</span></td>
+                                <td>2023-03-22</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-ban"></i> 禁用</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1004</td>
+                                <td>赵强</td>
+                                <td>zhaoqiang@example.com</td>
+                                <td><span class="role-student">学生</span></td>
+                                <td><span class="status-inactive">未激活</span></td>
+                                <td>2023-08-05</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-check"></i> 激活</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1005</td>
+                                <td>陈红</td>
+                                <td>chenhong@example.com</td>
+                                <td><span class="role-employer">企业</span></td>
+                                <td><span class="status-inactive">未激活</span></td>
+                                <td>2023-07-30</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-check"></i> 激活</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 个人资料编辑区域 -->
+            <div class="profile-container" style="margin-top: 40px;">
+                <div class="profile-header">
+                    <div class="avatar-container">
+                        <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="头像" class="avatar-img">
+                        <div class="avatar-actions">
+                            <button class="avatar-btn" title="更换头像">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                            <button class="avatar-btn" title="删除头像">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h2 class="profile-name">王管理员</h2>
+                        <div class="profile-role">管理员</div>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">42</div>
+                                <div class="stat-label">管理用户</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">128</div>
+                                <div class="stat-label">实习岗位</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">356</div>
+                                <div class="stat-label">申请记录</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active">基本信息</button>
+                    <button class="tab-btn">修改密码</button>
+                </div>
+
+                <div class="tab-content active">
+                    <div class="form-section">
+                        <h3>个人信息</h3>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="firstName">名字</label>
+                                <input type="text" id="firstName" value="王">
+                            </div>
+                            <div class="form-field">
+                                <label for="lastName">姓氏</label>
+                                <input type="text" id="lastName" value="管理员">
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label for="email">电子邮箱</label>
+                            <input type="email" id="email" value="admin@example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-cancel">取消</button>
+                        <button class="btn btn-save">保存更改</button>
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="form-section">
+                        <h3>修改密码</h3>
+                        <div class="form-field">
+                            <label for="currentPassword">当前密码</label>
+                            <input type="password" id="currentPassword">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="newPassword">新密码</label>
+                                <input type="password" id="newPassword">
+                            </div>
+                            <div class="form-field">
+                                <label for="confirmPassword">确认新密码</label>
+                                <input type="password" id="confirmPassword">
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <p class="text-muted">
+                                <i class="fas fa-info-circle"></i>
+                                密码必须包含至少8个字符，包括大写字母、小写字母、数字和特殊字符
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-cancel">取消</button>
+                        <button class="btn btn-save">更改密码</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 申请管理 -->
+            <div class="page-header" style="margin-top: 50px;">
+                <h1 class="page-title">实习申请管理</h1>
+            </div>
+
+            <div class="filter-panel">
+                <div class="filter-header">
+                    <h5>筛选申请</h5>
+                </div>
+                <div class="filter-form">
+                    <div class="form-group">
+                        <label for="applicantSearch">申请人</label>
+                        <input type="text" id="applicantSearch" class="form-control" placeholder="输入申请人姓名...">
+                    </div>
+                    <div class="form-group">
+                        <label for="internshipSearch">实习职位</label>
+                        <input type="text" id="internshipSearch" class="form-control" placeholder="输入职位名称...">
+                    </div>
+                    <div class="form-group">
+                        <label for="statusSearch">申请状态</label>
+                        <select id="statusSearch" class="form-select">
+                            <option value="">所有状态</option>
+                            <option value="pending">待处理</option>
+                            <option value="accepted">已接受</option>
+                            <option value="rejected">已拒绝</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button class="btn-filter">
+                            <i class="fas fa-filter"></i> 筛选
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="application-card">
+                <div class="application-header">
+                    <div>
+                        <div class="application-title">前端开发实习生</div>
+                        <div class="student-name">申请人: 张明</div>
+                    </div>
+                    <span class="status-badge status-submitted">待处理</span>
+                </div>
+                <div class="application-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-building"></i> 科技公司
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i> 北京市海淀区
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i> 申请时间: 2023-08-10
+                    </div>
+                </div>
+                <p>张明是一名计算机科学专业的学生，拥有丰富的Web开发经验，熟悉React和Vue框架。</p>
+                <div class="action-buttons">
+                    <button class="btn-action btn-accept" onclick="acceptApplication(1001)">
+                        <i class="fas fa-check"></i> 接受申请
+                    </button>
+                    <button class="btn-action btn-reject" onclick="openFeedbackModal(1001)">
+                        <i class="fas fa-times"></i> 拒绝申请
+                    </button>
+                    <button class="btn-action" style="background-color: #e0e0e0; color: #333;">
+                        <i class="fas fa-eye"></i> 查看简历
+                    </button>
+                </div>
+            </div>
+
+            <div class="application-card">
+                <div class="application-header">
+                    <div>
+                        <div class="application-title">市场推广实习生</div>
+                        <div class="student-name">申请人: 李华</div>
+                    </div>
+                    <span class="status-badge status-accepted">已接受</span>
+                </div>
+                <div class="application-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-building"></i> 营销公司
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i> 上海市浦东区
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i> 申请时间: 2023-08-05
+                    </div>
+                </div>
+                <p>李华是一名市场营销专业的学生，拥有社交媒体运营和内容创作的经验，曾参与多个校园推广活动。</p>
+                <div class="action-buttons">
+                    <button class="btn-action" style="background-color: #4caf50; color: white;">
+                        <i class="fas fa-envelope"></i> 发送录取通知
+                    </button>
+                    <button class="btn-action" style="background-color: #e0e0e0; color: #333;">
+                        <i class="fas fa-eye"></i> 查看简历
+                    </button>
+                </div>
+            </div>
+
+            <div class="application-card">
+                <div class="application-header">
+                    <div>
+                        <div class="application-title">数据分析实习生</div>
+                        <div class="student-name">申请人: 王芳</div>
+                    </div>
+                    <span class="status-badge status-rejected">已拒绝</span>
+                </div>
+                <div class="application-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-building"></i> 金融科技公司
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i> 深圳市南山区
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i> 申请时间: 2023-08-01
+                    </div>
+                </div>
+                <p>王芳是一名统计学专业的学生，熟悉Python和R语言，有金融数据分析经验。</p>
+                <div class="action-buttons">
+                    <button class="btn-action" style="background-color: #e0e0e0; color: #333;">
+                        <i class="fas fa-eye"></i> 查看简历
+                    </button>
+                    <button class="btn-action" style="background-color: #e0e0e0; color: #333;">
+                        <i class="fas fa-comment-alt"></i> 查看反馈
+                    </button>
+                </div>
+            </div>
+{% endblock %}

@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     {% block styles %}{% endblock %}
 </head>
-<body>
+<body style="display: flex;flex-direction: column;padding: 0px!important;justify-content: center;">
 {% block content %}{% endblock %}
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 </body>
 <!-- Flash消息容器 -->
 <div class="container mt-3">

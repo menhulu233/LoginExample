@@ -1,0 +1,125 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}管理首页{% endblock %}
+{% block dashboard_content %}
+ <div class="page-header">
+                <h1 class="page-title">用户管理</h1>
+                <button class="btn-primary">
+                    <i class="fas fa-plus"></i> 添加用户
+                </button>
+            </div>
+            <!-- 筛选面板 -->
+            <div class="filter-panel">
+                <div class="filter-header">
+                    <h5>筛选用户</h5>
+                </div>
+                <div class="filter-form">
+                    <div class="form-group">
+                        <label for="searchName">姓名</label>
+                        <input type="text" id="searchName" class="form-control" placeholder="输入姓名...">
+                    </div>
+                    <div class="form-group">
+                        <label for="roleFilter">角色</label>
+                        <select id="roleFilter" class="form-select">
+                            <option value="">所有角色</option>
+                            <option value="student">学生</option>
+                            <option value="employer">企业</option>
+                            <option value="admin">管理员</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="statusFilter">状态</label>
+                        <select id="statusFilter" class="form-select">
+                            <option value="">所有状态</option>
+                            <option value="active">活跃</option>
+                            <option value="inactive">未激活</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button class="btn-filter">
+                            <i class="fas fa-filter"></i> 筛选
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- 用户列表 -->
+            <div class="card">
+                <div class="card-body">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>姓名</th>
+                                <th>邮箱</th>
+                                <th>角色</th>
+                                <th>状态</th>
+                                <th>注册时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1001</td>
+                                <td>张明</td>
+                                <td>zhangming@example.com</td>
+                                <td><span class="role-student">学生</span></td>
+                                <td><span class="status-active">活跃</span></td>
+                                <td>2023-05-12</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-ban"></i> 禁用</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1002</td>
+                                <td>李华</td>
+                                <td>lihua@example.com</td>
+                                <td><span class="role-employer">企业</span></td>
+                                <td><span class="status-active">活跃</span></td>
+                                <td>2023-06-18</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-ban"></i> 禁用</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1003</td>
+                                <td>王芳</td>
+                                <td>wangfang@example.com</td>
+                                <td><span class="role-admin">管理员</span></td>
+                                <td><span class="status-active">活跃</span></td>
+                                <td>2023-03-22</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-ban"></i> 禁用</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1004</td>
+                                <td>赵强</td>
+                                <td>zhaoqiang@example.com</td>
+                                <td><span class="role-student">学生</span></td>
+                                <td><span class="status-inactive">未激活</span></td>
+                                <td>2023-08-05</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-check"></i> 激活</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1005</td>
+                                <td>陈红</td>
+                                <td>chenhong@example.com</td>
+                                <td><span class="role-employer">企业</span></td>
+                                <td><span class="status-inactive">未激活</span></td>
+                                <td>2023-07-30</td>
+                                <td class="action-cell">
+                                    <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                    <button class="btn-sm btn-toggle"><i class="fas fa-check"></i> 激活</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+{% endblock %}

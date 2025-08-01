@@ -1,0 +1,211 @@
+{% extends "employer/employer_base.html" %}
+{% block title %}企业首页{% endblock %}
+{% block dashboard_content %}
+<div class="content-container">
+    <div class="page-header">
+        <h1 class="page-title">实习岗位详情</h1>
+        <div>
+            <a href="{{ url_for('employer.internships') }}" class="btn-view mr-2">
+                <i class="fas fa-arrow-left"></i> 返回列表
+            </a>
+            <a href="{{ url_for('employer.edit_internship', internship_id=internship.internship_id) }}" class="btn-primary">
+                <i class="fas fa-edit"></i> 编辑岗位
+            </a>
+        </div>
+    </div>
+
+    <div class="internship-detail">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2 class="mb-3">{{ internship.title }}</h2>
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="company-logo mr-3">
+                                {% if current_employer.logo_path %}
+                                <img src="{{ url_for('static', filename='uploads/' + current_employer.logo_path) }}"
+                                     alt="公司Logo" style="width: 60px; height: 60px; border-radius: 8px;">
+                                {% else %}
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                     style="width: 60px; height: 60px;">
+                                    <i class="fas fa-building text-muted" style="font-size: 1.5rem;"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <h4 class="mb-0">{{ current_employer.company_name }}</h4>
+                                <div class="text-muted">职位ID: I{{ internship.internship_id }}</div>
+                            </div>
+                        </div>
+
+                        <div class="internship-meta mb-4">
+                            <div class="d-flex flex-wrap">
+                                <div class="meta-item mr-4 mb-2">
+                                    <i class="fas fa-map-marker-alt text-primary mr-1"></i>
+                                    <strong>工作地点:</strong> {{ internship.location }}
+                                </div>
+                                <div class="meta-item mr-4 mb-2">
+                                    <i class="fas fa-clock text-primary mr-1"></i>
+                                    <strong>实习时长:</strong> {{ internship.duration or '面议' }}
+                                </div>
+                                <div class="meta-item mr-4 mb-2">
+                                    <i class="fas fa-users text-primary mr-1"></i>
+                                    <strong>招聘人数:</strong> {{ internship.number_of_opening or '若干' }}
+                                </div>
+                                <div class="meta-item mr-4 mb-2">
+                                    <i class="fas fa-money-bill-wave text-primary mr-1"></i>
+                                    <strong>薪资待遇:</strong> {{ internship.stipend or '面议' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="deadline-section mb-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-hourglass-half text-warning mr-2"></i>
+                                <div>
+                                    <strong>申请截止:</strong>
+                                    <span class="{% if internship.deadline < current_date %}text-danger{% else %}text-success{% endif %}">
+                                        {{ internship.deadline.strftime('%Y年%m月%d日') }}
+                                        {% if internship.deadline < current_date %}(已截止){% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skills-section mb-4">
+                            <h5>所需技能</h5>
+                            <div class="d-flex flex-wrap">
+                                {% for skill in internship.skills_required.split(',') %}
+                                <span class="skill-tag">{{ skill.strip() }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="stats-card bg-light rounded p-4">
+                            <h5 class="mb-4">申请统计</h5>
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <div class="text-muted small">申请总数</div>
+                                    <div class="h4 font-weight-bold">{{ internship.application_count }}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-muted small">已录取</div>
+                                    <div class="h4 font-weight-bold text-success">{{ internship.accepted_count }}</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-muted small">待处理</div>
+                                    <div class="h4 font-weight-bold text-warning">{{ internship.application_count - internship.accepted_count }}</div>
+                                </div>
+                            </div>
+
+                            <div class="progress mb-3" style="height: 10px;">
+                                <div class="progress-bar bg-success"
+                                     style="width: {{ (internship.accepted_count / internship.application_count * 100) if internship.application_count > 0 else 0 }}%">
+                                </div>
+                            </div>
+
+                            <a href="{{ url_for('employer.applications') }}?internship={{ internship.internship_id }}"
+                               class="btn btn-primary btn-block mt-3">
+                                <i class="fas fa-list mr-1"></i> 查看所有申请
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="description-section mb-4">
+                    <h5>职位描述</h5>
+                    <div class="description-content bg-light p-4 rounded">
+                        {{ internship.description | safe }}
+                    </div>
+                </div>
+
+                {% if internship.additional_req %}
+                <div class="requirements-section mb-4">
+                    <h5>其他要求</h5>
+                    <div class="bg-light p-4 rounded">
+                        {{ internship.additional_req | safe }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">申请者列表 ({{ applications | length }})</h5>
+            </div>
+
+            {% if applications %}
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>申请人</th>
+                                <th>学校/专业</th>
+                                <th>申请时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in applications %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {% if app.profile_image %}
+                                        <img src="{{ url_for('static', filename='uploads/' + app.profile_image) }}"
+                                             alt="头像" class="rounded-circle mr-2" style="width: 36px; height: 36px; object-fit: cover;">
+                                        {% else %}
+                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mr-2"
+                                             style="width: 36px; height: 36px;">
+                                            {{ app.student_name[0] }}
+                                        </div>
+                                        {% endif %}
+                                        <div>
+                                            <div class="font-weight-bold">{{ app.student_name }}</div>
+                                            <div class="small text-muted">{{ app.student_email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>{{ app.university }}</div>
+                                    <div class="small text-muted">{{ app.course }}</div>
+                                </td>
+                                <td>{{ app.applied_at.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    <span class="badge
+                                        {% if app.status == 'submitted' %}badge-info
+                                        {% elif app.status == 'reviewed' %}badge-warning
+                                        {% elif app.status == 'accepted' %}badge-success
+                                        {% else %}badge-danger{% endif %}">
+                                        {{ app.status_text }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('employer.application_detail', application_id=app.application_id) }}"
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i> 查看
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+            <div class="card-body text-center py-5">
+                <i class="fas fa-user-friends fa-3x text-muted mb-3"></i>
+                <h5>暂无申请者</h5>
+                <p class="text-muted">该实习岗位尚未收到任何申请</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

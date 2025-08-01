@@ -19,7 +19,7 @@ bp = Blueprint('student', __name__, url_prefix='/student')
 def dashboard():
     # 获取学生相关数据（实际应用中需要实现）
     current_user = {}
-    return render_template('student/dashboard.html', current_user=current_user)
+    return render_template('admin/internship_management.html', current_user=current_user,application={})
 
 
 @bp.route('/applications', methods=['GET'])

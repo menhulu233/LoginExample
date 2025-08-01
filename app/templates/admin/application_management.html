@@ -1,0 +1,132 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}管理首页{% endblock %}
+{% block dashboard_content %}
+<!-- 申请管理 -->
+<div class="page-header" style="margin-top: 50px;">
+    <h1 class="page-title">实习申请管理</h1>
+</div>
+
+<div class="filter-panel">
+    <div class="filter-header">
+        <h5>筛选申请</h5>
+    </div>
+    <div class="filter-form">
+        <div class="form-group">
+            <label for="applicantSearch">申请人</label>
+            <input type="text" id="applicantSearch" class="form-control" placeholder="输入申请人姓名...">
+        </div>
+        <div class="form-group">
+            <label for="internshipSearch">实习职位</label>
+            <input type="text" id="internshipSearch" class="form-control" placeholder="输入职位名称...">
+        </div>
+        <div class="form-group">
+            <label for="statusSearch">申请状态</label>
+            <select id="statusSearch" class="form-select">
+                <option value="">所有状态</option>
+                <option value="pending">待处理</option>
+                <option value="accepted">已接受</option>
+                <option value="rejected">已拒绝</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <button class="btn-filter">
+                <i class="fas fa-filter"></i> 筛选
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="application-card">
+    <div class="application-header">
+        <div>
+            <div class="application-title">前端开发实习生</div>
+            <div class="student-name">申请人: 张明</div>
+        </div>
+        <span class="status-badge status-submitted">待处理</span>
+    </div>
+    <div class="application-meta">
+        <div class="meta-item">
+            <i class="fas fa-building"></i> 科技公司
+        </div>
+        <div class="meta-item">
+            <i class="fas fa-map-marker-alt"></i> 北京市海淀区
+        </div>
+        <div class="meta-item">
+            <i class="fas fa-calendar-alt"></i> 申请时间: 2023-08-10
+        </div>
+    </div>
+    <p>张明是一名计算机科学专业的学生，拥有丰富的Web开发经验，熟悉React和Vue框架。</p>
+    <div class="action-buttons">
+        <button class="btn-action btn-accept" onclick="acceptApplication(1001)">
+            <i class="fas fa-check"></i> 接受申请
+        </button>
+        <button class="btn-action btn-reject" onclick="openFeedbackModal(1001)">
+            <i class="fas fa-times"></i> 拒绝申请
+        </button>
+        <button class="btn-action" style="background-color: #e0e0e0; color: #333;">
+            <i class="fas fa-eye"></i> 查看简历
+        </button>
+    </div>
+</div>
+
+<div class="application-card">
+    <div class="application-header">
+        <div>
+            <div class="application-title">市场推广实习生</div>
+            <div class="student-name">申请人: 李华</div>
+        </div>
+        <span class="status-badge status-accepted">已接受</span>
+    </div>
+    <div class="application-meta">
+        <div class="meta-item">
+            <i class="fas fa-building"></i> 营销公司
+        </div>
+        <div class="meta-item">
+            <i class="fas fa-map-marker-alt"></i> 上海市浦东区
+        </div>
+        <div class="meta-item">
+            <i class="fas fa-calendar-alt"></i> 申请时间: 2023-08-05
+        </div>
+    </div>
+    <p>李华是一名市场营销专业的学生，拥有社交媒体运营和内容创作的经验，曾参与多个校园推广活动。</p>
+    <div class="action-buttons">
+        <button class="btn-action" style="background-color: #4caf50; color: white;">
+            <i class="fas fa-envelope"></i> 发送录取通知
+        </button>
+        <button class="btn-action" style="background-color: #e0e0e0; color: #333;">
+            <i class="fas fa-eye"></i> 查看简历
+        </button>
+    </div>
+</div>
+
+<div class="application-card">
+    <div class="application-header">
+        <div>
+            <div class="application-title">数据分析实习生</div>
+            <div class="student-name">申请人: 王芳</div>
+        </div>
+        <span class="status-badge status-rejected">已拒绝</span>
+    </div>
+    <div class="application-meta">
+        <div class="meta-item">
+            <i class="fas fa-building"></i> 金融科技公司
+        </div>
+        <div class="meta-item">
+            <i class="fas fa-map-marker-alt"></i> 深圳市南山区
+        </div>
+        <div class="meta-item">
+            <i class="fas fa-calendar-alt"></i> 申请时间: 2023-08-01
+        </div>
+    </div>
+    <p>王芳是一名统计学专业的学生，熟悉Python和R语言，有金融数据分析经验。</p>
+    <div class="action-buttons">
+        <button class="btn-action" style="background-color: #e0e0e0; color: #333;">
+            <i class="fas fa-eye"></i> 查看简历
+        </button>
+        <button class="btn-action" style="background-color: #e0e0e0; color: #333;">
+            <i class="fas fa-comment-alt"></i> 查看反馈
+        </button>
+    </div>
+</div>
+{% endblock %}

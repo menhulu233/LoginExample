@@ -1,0 +1,180 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}管理首页{% endblock %}
+{% block dashboard_content %}
+<div class="page-content" id="internship-management">
+    <div class="page-header">
+        <h1 class="page-title">实习管理</h1>
+        <button class="btn-primary">
+            <i class="fas fa-plus"></i> 添加实习
+        </button>
+    </div>
+
+    <div class="filter-panel">
+        <div class="filter-header">
+            <h5>筛选实习</h5>
+        </div>
+        <div class="internship-filter">
+            <div class="form-group">
+                <label for="categoryFilter">类别</label>
+                <select id="categoryFilter" class="form-select">
+                    <option value="">所有类别</option>
+                    <option value="tech">技术</option>
+                    <option value="marketing">市场营销</option>
+                    <option value="finance">金融</option>
+                    <option value="design">设计</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="locationFilter">地点</label>
+                <select id="locationFilter" class="form-select">
+                    <option value="">所有地点</option>
+                    <option value="beijing">北京</option>
+                    <option value="shanghai">上海</option>
+                    <option value="guangzhou">广州</option>
+                    <option value="shenzhen">深圳</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="durationFilter">时长</label>
+                <select id="durationFilter" class="form-select">
+                    <option value="">所有时长</option>
+                    <option value="short">短期 (1-3个月)</option>
+                    <option value="medium">中期 (3-6个月)</option>
+                    <option value="long">长期 (6个月以上)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn-filter">
+                    <i class="fas fa-filter"></i> 筛选
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="internship-card">
+        <div class="internship-header">
+            <div>
+                <div class="internship-title">前端开发实习生</div>
+                <div class="company-name">科技公司</div>
+            </div>
+            <div class="deadline urgent">截止: 2023-08-30</div>
+        </div>
+
+        <div class="internship-meta">
+            <div class="meta-item">
+                <i class="fas fa-map-marker-alt"></i> 北京市海淀区
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-clock"></i> 3-6个月
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-calendar-alt"></i> 2023-09-01 至 2024-02-28
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-user-graduate"></i> 计算机相关专业
+            </div>
+        </div>
+
+        <div class="skills">
+            <span class="skill-tag">HTML/CSS</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">Vue.js</span>
+            <span class="skill-tag">响应式设计</span>
+        </div>
+
+        <p>负责公司产品的前端开发工作，参与产品需求分析和设计，实现用户界面和交互功能。</p>
+
+        <div class="card-footer">
+            <div class="stipend">￥3000-5000/月</div>
+            <a href="#" class="btn-view">
+                查看详情 <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="internship-card">
+        <div class="internship-header">
+            <div>
+                <div class="internship-title">市场营销实习生</div>
+                <div class="company-name">营销公司</div>
+            </div>
+            <div class="deadline">截止: 2023-09-15</div>
+        </div>
+
+        <div class="internship-meta">
+            <div class="meta-item">
+                <i class="fas fa-map-marker-alt"></i> 上海市浦东区
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-clock"></i> 3个月
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-calendar-alt"></i> 2023-10-01 至 2023-12-31
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-user-graduate"></i> 市场营销相关专业
+            </div>
+        </div>
+
+        <div class="skills">
+            <span class="skill-tag">市场分析</span>
+            <span class="skill-tag">社交媒体</span>
+            <span class="skill-tag">内容创作</span>
+            <span class="skill-tag">活动策划</span>
+        </div>
+
+        <p>协助市场部门进行市场调研，参与社交媒体运营和内容创作，支持线上线下营销活动的执行。</p>
+
+        <div class="card-footer">
+            <div class="stipend">￥2500-4000/月</div>
+            <a href="#" class="btn-view">
+                查看详情 <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="internship-card">
+        <div class="internship-header">
+            <div>
+                <div class="internship-title">金融数据分析实习生</div>
+                <div class="company-name">金融科技公司</div>
+            </div>
+            <div class="deadline">截止: 2023-09-20</div>
+        </div>
+
+        <div class="internship-meta">
+            <div class="meta-item">
+                <i class="fas fa-map-marker-alt"></i> 深圳市南山区
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-clock"></i> 6个月
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-calendar-alt"></i> 2023-10-01 至 2024-03-31
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-user-graduate"></i> 金融/统计/数学专业
+            </div>
+        </div>
+
+        <div class="skills">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">数据分析</span>
+            <span class="skill-tag">Excel</span>
+            <span class="skill-tag">统计学</span>
+        </div>
+
+        <p>协助数据分析师进行金融数据处理和分析，参与构建数据模型和可视化报告，支持业务决策。</p>
+
+        <div class="card-footer">
+            <div class="stipend">￥3500-6000/月</div>
+            <a href="#" class="btn-view">
+                查看详情 <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
