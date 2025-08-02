@@ -1,49 +1,50 @@
 {% extends "student/student_base.html" %}
-{% block title %}学生首页{% endblock %}
+{% block title %}Student Dashboard{% endblock %}
 {% block dashboard_content %}
 <div class="welcome-section">
-    <h2>欢迎回来, {{ current_user.full_name or current_user.username }}!</h2>
-    <p class="lead">今天有 <strong>12</strong> 个新实习机会等待您的申请，<strong>3</strong> 个申请状态已更新</p>
-    <button class="btn btn-light btn-lg mt-3">浏览最新实习</button>
+    <h2>Welcome back, {{ current_user.full_name or current_user.username }}!</h2>
+    <p class="lead">There are <strong>12</strong> new internship opportunities waiting for your application, and <strong>3</strong> application statuses have been updated</p>
+    <button class="btn btn-light btn-lg mt-3">Browse Latest Internships</button>
 </div>
-<!-- 统计卡片 -->
+<!-- Statistics Cards -->
 <div class="stats-container">
     <div class="stat-card">
         <i class="fas fa-briefcase"></i>
         <h3>24</h3>
-        <p>可申请实习岗位</p>
+        <p>Available Internship Positions</p>
     </div>
 
     <div class="stat-card">
         <i class="fas fa-file-alt"></i>
         <h3>8</h3>
-        <p>已提交申请</p>
+        <p>Submitted Applications</p>
     </div>
 
     <div class="stat-card">
         <i class="fas fa-check-circle"></i>
         <h3>2</h3>
-        <p>已录取实习</p>
+        <p>Accepted Internships</p>
     </div>
 </div>
-<!-- 最近申请部分 -->
+<!-- Recent Applications Section -->
 <div class="recent-section">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>最近申请</h4>
-        <a href="{{ url_for('student.applications') }}" class="btn btn-sm btn-outline-primary">查看全部</a>
+        <h4>Recent Applications</h4>
+        <a href="{{ url_for('student.applications') }}" class="btn btn-sm btn-outline-primary">View All</a>
     </div>
 
     <div class="application-list">
         <div class="application-item">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h5>前端开发实习生</h5>
-                    <p class="mb-1">腾讯科技 · 深圳</p>
-                    <p class="text-muted small mb-0">申请时间: 2023-06-15</p>
+                    <h5>Frontend Developer Intern</h5>
+                    <p class="mb-1">Xero · Auckland</p>
+                    <p class="text-muted small mb-0">Application Date: 2025-01-15</p>
+                    <p class="text-muted small mb-0">Hourly Rate: $25</p>
                 </div>
                 <div class="text-right">
-                    <span class="status-badge status-pending">待处理</span>
-                    <p class="mb-0">截止: 2023-07-10</p>
+                    <span class="status-badge status-pending">Pending</span>
+                    <p class="mb-0">Deadline: 2025-02-10</p>
                 </div>
             </div>
         </div>
@@ -51,13 +52,14 @@
         <div class="application-item">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h5>产品经理助理</h5>
-                    <p class="mb-1">阿里巴巴 · 杭州</p>
-                    <p class="text-muted small mb-0">申请时间: 2023-06-10</p>
+                    <h5>Assistant Product Manager</h5>
+                    <p class="mb-1">Fisher & Paykel · Christchurch</p>
+                    <p class="text-muted small mb-0">Application Date: 2025-01-10</p>
+                    <p class="text-muted small mb-0">Hourly Rate: $30</p>
                 </div>
                 <div class="text-right">
-                    <span class="status-badge status-accepted">已录取</span>
-                    <p class="mb-0">录用日期: 2023-06-25</p>
+                    <span class="status-badge status-accepted">Accepted</span>
+                    <p class="mb-0">Acceptance Date: 2025-01-25</p>
                 </div>
             </div>
         </div>
@@ -65,13 +67,14 @@
         <div class="application-item">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h5>数据分析实习生</h5>
-                    <p class="mb-1">字节跳动 · 北京</p>
-                    <p class="text-muted small mb-0">申请时间: 2023-06-05</p>
+                    <h5>Data Analyst Intern</h5>
+                    <p class="mb-1">Datacom · Wellington</p>
+                    <p class="text-muted small mb-0">Application Date: 2025-01-05</p>
+                    <p class="text-muted small mb-0">Hourly Rate: $28</p>
                 </div>
                 <div class="text-right">
-                    <span class="status-badge status-rejected">未录取</span>
-                    <p class="mb-0">通知日期: 2023-06-20</p>
+                    <span class="status-badge status-rejected">Rejected</span>
+                    <p class="mb-0">Notification Date: 2025-01-20</p>
                 </div>
             </div>
         </div>
@@ -79,13 +82,14 @@
         <div class="application-item">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h5>UI/UX设计实习生</h5>
-                    <p class="mb-1">美团 · 上海</p>
-                    <p class="text-muted small mb-0">申请时间: 2023-06-01</p>
+                    <h5>UI/UX Designer Intern</h5>
+                    <p class="mb-1">Trade Me · Hamilton</p>
+                    <p class="text-muted small mb-0">Application Date: 2025-01-01</p>
+                    <p class="text-muted small mb-0">Hourly Rate: $27</p>
                 </div>
                 <div class="text-right">
-                    <span class="status-badge status-pending">待处理</span>
-                    <p class="mb-0">截止: 2023-07-15</p>
+                    <span class="status-badge status-pending">Pending</span>
+                    <p class="mb-0">Deadline: 2025-02-15</p>
                 </div>
             </div>
         </div>

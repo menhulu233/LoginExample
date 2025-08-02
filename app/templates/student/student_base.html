@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}学生仪表板 - 实习管理系统{% endblock %}
+{% block title %}Student Dashboard - Internship Management System{% endblock %}
 
 {% block styles %}
 <style>
-     /* 筛选面板样式 */
+    /* Filter Panel */
     .filter-panel {
         background-color: #fff;
         border-radius: 8px;
@@ -49,7 +49,7 @@
         margin-top: 20px;
     }
 
-    /* 实习卡片样式 */
+    /* Internship Card Styles */
     .internship-card {
         background-color: #fff;
         border-radius: 8px;
@@ -147,7 +147,7 @@
         color: #388e3c;
     }
 
-    /* 分页样式 */
+    /* Pagination Styles */
     .pagination-container {
         display: flex;
         justify-content: center;
@@ -190,7 +190,7 @@
         pointer-events: none;
     }
 
-    /* 空状态 */
+    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 40px 20px;
@@ -379,7 +379,7 @@
         border-top: 1px solid #eee;
     }
 
-    /* 时间线样式 */
+    /* Timeline Styles */
     .timeline {
         position: relative;
         padding: 20px 0;
@@ -447,7 +447,7 @@
     .timeline-text {
         color: #555;
     }
-        /* 筛选面板样式 */
+        /* Filter Panel */
     .filter-panel {
         background-color: #fff;
         border-radius: 8px;
@@ -496,7 +496,7 @@
         border-bottom-left-radius: 0;
     }
 
-    /* 申请卡片样式 */
+    /* Application Card Styles */
     .application-card {
         background-color: #fff;
         border-radius: 8px;
@@ -591,7 +591,7 @@
         color: #777;
     }
 
-    /* 空状态 */
+    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 40px 20px;
@@ -617,7 +617,7 @@
         margin: 0 auto 20px;
     }
 
-    /* 响应式设计 */
+    /* Responsive Design */
     @media (max-width: 768px) {
         .application-header {
             flex-direction: column;
@@ -630,14 +630,14 @@
             gap: 10px;
         }
     }
-    /* 整体布局样式 */
+    /* Overall Layout Styles */
     .dashboard-container {
         display: flex;
         min-height: 100vh;
         background-color: #f8f9fa;
     }
 
-    /* 左侧导航栏样式 */
+    /* Sidebar Styles */
     .sidebar {
         width: 250px;
         background: linear-gradient(135deg, #1e3c72, #2a5298);
@@ -678,7 +678,7 @@
         text-align: center;
     }
 
-    /* 顶部导航栏样式 */
+    /* Top Navbar Styles */
     .top-navbar {
         background-color: white;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -746,7 +746,7 @@
         text-align: center;
     }
 
-    /* 主内容区域样式 */
+    /* Main Content Area Styles */
     .main-content {
         flex: 1;
         margin-left: 250px;
@@ -1273,7 +1273,7 @@
     .btn-submit i {
         margin-right: 8px;
     }
-    /* 响应式设计 */
+    /* Responsive Design */
     @media (max-width: 992px) {
         .sidebar {
             width: 70px;
@@ -1315,47 +1315,47 @@
 
 {% block content %}
 <div class="dashboard-container">
-    <!-- 左侧导航栏 -->
+    <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h3 class="text-center mb-0">实习管理系统</h3>
-            <p class="text-center text-muted small mt-1">学生版</p>
+            <h3 class="text-center mb-0">Internship Management System</h3>
+            <p class="text-center text-muted small mt-1">Student Version</p>
         </div>
 
         <ul class="nav flex-column mt-4">
             <li class="nav-item">
                 <a class="nav-link active" href="{{ url_for('student.dashboard') }}">
                     <i class="fas fa-tachometer-alt"></i>
-                    <span class="nav-text">仪表板</span>
+                    <span class="nav-text">Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('student.internships') }}">
                     <i class="fas fa-briefcase"></i>
-                    <span class="nav-text">浏览实习</span>
+                    <span class="nav-text">Browse Internships</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('student.applications') }}">
                     <i class="fas fa-file-alt"></i>
-                    <span class="nav-text">我的申请</span>
+                    <span class="nav-text">My Applications</span>
                 </a>
             </li>
         </ul>
     </div>
 
-    <!-- 主内容区域 -->
+    <!-- Main Content -->
     <div class="main-content">
-        <!-- 顶部导航栏 -->
+        <!-- Top Navbar -->
         <div class="top-navbar">
-            <h4 class="mb-0">学生仪表板</h4>
+            <h4 class="mb-0">Student Dashboard</h4>
 
             <div class="user-dropdown">
                 <div class="user-dropdown-toggle" id="userDropdown">
                     {% if current_user.profile_image %}
-                    <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="用户头像">
+                    <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="User Avatar">
                     {% else %}
-                    <img src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="默认头像">
+                    <img src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="Default Avatar">
                     {% endif %}
                     <span>{{ current_user.full_name or current_user.username }}</span>
                     <i class="fas fa-chevron-down ml-2"></i>
@@ -1363,20 +1363,20 @@
 
                 <div class="user-dropdown-menu" id="dropdownMenu">
                     <a class="dropdown-item" href="{{ url_for('student.profile') }}">
-                        <i class="fas fa-user-circle"></i> 查看个人资料
+                        <i class="fas fa-user-circle"></i> View Profile
                     </a>
                     <a class="dropdown-item" href="{{ url_for('student.profile_edit') }}">
-                        <i class="fas fa-edit"></i> 编辑个人资料
+                        <i class="fas fa-edit"></i> Edit Profile
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ url_for('user.logout') }}">
-                        <i class="fas fa-sign-out-alt"></i> 退出登录
+                        <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- 仪表板内容 -->
+        <!-- Dashboard Content -->
          <div class="container">
              {% block dashboard_content %}
         {% endblock %} </div>
@@ -1387,17 +1387,17 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- 引入Font Awesome图标 -->
+<!-- Include Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 <script>
-    // 用户下拉菜单切换
+    // Toggle user dropdown menu
     document.getElementById('userDropdown').addEventListener('click', function() {
         const dropdownMenu = document.getElementById('dropdownMenu');
         dropdownMenu.classList.toggle('show');
     });
 
-    // 点击页面其他位置关闭下拉菜单
+    // Close dropdown menu when clicking outside
     document.addEventListener('click', function(event) {
         const dropdownMenu = document.getElementById('dropdownMenu');
         const userDropdown = document.getElementById('userDropdown');
@@ -1407,7 +1407,7 @@
         }
     });
 
-    // 设置当前激活的导航链接
+    // Set active navigation link
     document.addEventListener('DOMContentLoaded', function() {
         const currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.sidebar .nav-link');

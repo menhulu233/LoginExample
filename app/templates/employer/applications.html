@@ -1,12 +1,12 @@
 {% extends "employer/employer_base.html" %}
-{% block title %}企业首页{% endblock %}
+{% block title %}Employer Dashboard{% endblock %}
 {% block dashboard_content %}
 <div class="content-container">
     <div class="page-header">
-        <h1 class="page-title">实习申请管理</h1>
+        <h1 class="page-title">Internship Application Management</h1>
     </div>
 
-    <!-- 统计卡片 -->
+    <!-- Statistics Cards -->
     <div class="stats-container">
         <div class="stat-card">
             <div class="stat-icon icon-blue">
@@ -14,7 +14,7 @@
             </div>
             <div class="stat-info">
                 <div class="stat-value">{{ total_records }}</div>
-                <div class="stat-label">收到的申请</div>
+                <div class="stat-label">Applications Received</div>
             </div>
         </div>
 
@@ -27,7 +27,7 @@
                     {% set accepted_count = applications | selectattr('status', 'equalto', 'accepted') | list | count %}
                     {{ accepted_count }}
                 </div>
-                <div class="stat-label">已录取</div>
+                <div class="stat-label">Accepted</div>
             </div>
         </div>
 
@@ -40,27 +40,27 @@
                     {% set pending_count = applications | selectattr('status', 'in', ['submitted', 'reviewed']) | list | count %}
                     {{ pending_count }}
                 </div>
-                <div class="stat-label">待处理</div>
+                <div class="stat-label">Pending</div>
             </div>
         </div>
     </div>
 
-    <!-- 筛选面板 -->
+    <!-- Filter Panel -->
     <div class="filter-panel">
         <div class="filter-header">
-            <h5>筛选申请</h5>
-            <span>共 {{ total_records }} 个申请</span>
+            <h5>Filter Applications</h5>
+            <span>Total {{ total_records }} Applications</span>
         </div>
 
         <form class="filter-form" method="GET" action="{{ url_for('employer.applications') }}">
             <div class="form-group">
-                <label for="search">申请人/职位</label>
+                <label for="search">Applicant/Position</label>
                 <input type="text" class="form-control" id="search" name="search"
-                       value="{{ search_query }}" placeholder="输入关键词...">
+                       value="{{ search_query }}" placeholder="Enter keywords...">
             </div>
 
             <div class="form-group">
-                <label for="status">申请状态</label>
+                <label for="status">Application Status</label>
                 <select class="form-select" id="status" name="status">
                     {% for value, text in status_options %}
                     <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ text }}</option>
@@ -69,9 +69,9 @@
             </div>
 
             <div class="form-group">
-                <label for="internship">实习职位</label>
+                <label for="internship">Internship Position</label>
                 <select class="form-select" id="internship" name="internship">
-                    <option value="">所有职位</option>
+                    <option value="">All Positions</option>
                     {% for internship in internships %}
                     <option value="{{ internship.internship_id }}"
                             {% if current_internship == internship.internship_id|string %}selected{% endif %}>
@@ -84,15 +84,15 @@
             <div class="form-group">
                 <label>&nbsp;</label>
                 <button type="submit" class="btn-filter">
-                    <i class="fas fa-filter"></i> 筛选申请
+                    <i class="fas fa-filter"></i> Filter Applications
                 </button>
             </div>
         </form>
     </div>
 
-    <!-- 申请列表 -->
+    <!-- Applications List -->
     <div class="applications-list">
-        <h4 class="mb-3">申请列表</h4>
+        <h4 class="mb-3">Applications List</h4>
 
         {% if applications %}
             {% for app in applications %}
@@ -103,10 +103,10 @@
                         <p class="student-name">{{ app.student_name }} | {{ app.university }} | {{ app.course }}</p>
                         <div class="application-meta">
                             <div class="meta-item">
-                                <i class="fas fa-user"></i> 申请ID: A{{ app.application_id }}
+                                <i class="fas fa-user"></i> Application ID: A{{ app.application_id }}
                             </div>
                             <div class="meta-item">
-                                <i class="fas fa-calendar-alt"></i> 申请时间: {{ app.applied_at.strftime('%Y-%m-%d') }}
+                                <i class="fas fa-calendar-alt"></i> Application Date: {{ app.applied_at.strftime('%Y-%m-%d') }}
                             </div>
                         </div>
                     </div>
@@ -122,23 +122,23 @@
                 <div class="action-buttons">
                     <a href="{{ url_for('employer.application_detail', application_id=app.application_id) }}"
                        class="btn-action" style="background-color: var(--primary); color: white;">
-                        <i class="fas fa-eye"></i> 查看详情
+                        <i class="fas fa-eye"></i> View Details
                     </a>
                     {% if app.status != 'accepted' and app.status != 'rejected' %}
                     <a href="{{ url_for('employer.application_detail', application_id=app.application_id) }}?action=accept"
                        class="btn-action btn-accept">
-                        <i class="fas fa-check"></i> 接受申请
+                        <i class="fas fa-check"></i> Accept Application
                     </a>
                     <a href="{{ url_for('employer.application_detail', application_id=app.application_id) }}?action=reject"
                        class="btn-action btn-reject">
-                        <i class="fas fa-times"></i> 拒绝申请
+                        <i class="fas fa-times"></i> Reject Application
                     </a>
                     {% endif %}
                 </div>
             </div>
             {% endfor %}
 
-            <!-- 分页 -->
+            <!-- Pagination -->
             {% if total_pages > 1 %}
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
@@ -170,8 +170,8 @@
         {% else %}
             <div class="empty-state">
                 <i class="fas fa-file-alt"></i>
-                <h5>暂无申请记录</h5>
-                <p>当前筛选条件下没有找到申请记录，请尝试其他筛选条件</p>
+                <h5>No Applications Found</h5>
+                <p>No applications found under the current filter conditions. Please try other filters.</p>
             </div>
         {% endif %}
     </div>

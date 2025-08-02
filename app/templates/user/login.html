@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}用户登录{% endblock %}
+{% block title %}User Login{% endblock %}
 {% block styles %}
 <style>
     :root {
@@ -275,7 +275,7 @@
 <div class="login-container">
     <div class="card">
         <div class="card-header text-center">
-            <h3><i class="fas fa-user-lock me-2"></i>用户登录</h3>
+            <h3><i class="fas fa-user-lock me-2"></i>User Login</h3>
         </div>
         <div class="card-body">
             <form method="POST">
@@ -283,27 +283,27 @@
                 <div class="form-group">
                     {{ form.username.label }}
                     <i class="fas fa-user input-icon"></i>
-                    {{ form.username(class="form-control", placeholder="请输入用户名") }}
+                    {{ form.username(class="form-control", placeholder="Enter username") }}
                 </div>
                 <div class="form-group">
                     {{ form.password.label }}
                     <i class="fas fa-lock input-icon"></i>
-                    {{ form.password(class="form-control", placeholder="请输入密码") }}
+                    {{ form.password(class="form-control", placeholder="Enter password") }}
                 </div>
                 <div class="form-group">
                     {{ form.submit(class="btn btn-primary btn-block w-100") }}
                 </div>
 
                 <div class="links-container">
-                    <a href="{{ url_for('user.forgot_password') }}"><i class="fas fa-key me-1"></i>忘记密码?</a>
-                    <a href="{{ url_for('user.register') }}"><i class="fas fa-user-plus me-1"></i>注册新账号</a>
+                    <a href="{{ url_for('user.forgot_password') }}"><i class="fas fa-key me-1"></i>Forgot Password?</a>
+                    <a href="{{ url_for('user.register') }}"><i class="fas fa-user-plus me-1"></i>Register New Account</a>
                 </div>
             </form>
         </div>
     </div>
 
     <div class="footer">
-        <p>&copy; 2023 实习管理系统 </p>
+        <p>&copy; 2025 Internship Management System</p>
     </div>
 </div>
 {% endblock %}

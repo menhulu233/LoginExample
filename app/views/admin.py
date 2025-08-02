@@ -9,26 +9,26 @@ bp = Blueprint('admin', __name__, url_prefix='/admin')
 
 
 def is_admin():
-    """验证当前用户是否为管理员"""
+    """Verify if the current user is an admin"""
     return 'role' in session and session['role'] == 'admin'
 
 
 @bp.before_request
 def check_admin():
-    """检查管理员权限"""
+    """Check admin permissions"""
     if not is_admin():
-        flash('您没有访问此页面的权限', 'danger')
+        flash('You do not have permission to access this page', 'danger')
         return redirect(url_for('auth.login'))
 
 
 @bp.route('/dashboard')
 def dashboard():
-    """管理员仪表板"""
-    # 获取统计数据
+    """Admin dashboard"""
+    # Fetch statistics
     try:
         connection = db.get_db_conn()
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-            # 用户统计数据
+            # User statistics
             cursor.execute("""
                 SELECT 
                     COUNT(*) AS total_users,
@@ -41,7 +41,7 @@ def dashboard():
             """)
             user_stats = cursor.fetchone()
 
-            # 实习统计数据
+            # Internship statistics
             cursor.execute("""
                 SELECT 
                     COUNT(*) AS total_internships,
@@ -51,7 +51,7 @@ def dashboard():
             """)
             internship_stats = cursor.fetchone()
 
-            # 申请统计数据
+            # Application statistics
             cursor.execute("""
                 SELECT 
                     COUNT(*) AS total_applications,
@@ -69,7 +69,7 @@ def dashboard():
                                    application_stats=application_stats)
 
     except Exception as e:
-        flash(f'加载数据失败: {str(e)}', 'danger')
+        flash(f'Failed to load data: {str(e)}', 'danger')
         return render_template('admin/dashboard.html')
     finally:
         connection.close()
@@ -77,12 +77,12 @@ def dashboard():
 
 @bp.route('/users')
 def user_list():
-    """用户列表管理"""
-    # 获取分页参数
+    """User list management"""
+    # Get pagination parameters
     page = request.args.get('page', 1, type=int)
-    per_page = 15  # 每页显示15条记录
+    per_page = 15  # Display 15 records per page
 
-    # 获取筛选参数
+    # Get filter parameters
     search = request.args.get('search', '')
     role = request.args.get('role', '')
     status = request.args.get('status', '')
@@ -90,11 +90,11 @@ def user_list():
     try:
         connection = db.get_db_conn()
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-            # 基础查询
+            # Base query
             base_query = "SELECT * FROM users WHERE 1=1"
             params = []
 
-            # 添加筛选条件
+            # Add filter conditions
             if search:
                 base_query += " AND (username LIKE %s OR full_name LIKE %s OR email LIKE %s)"
                 params.extend([f"%{search}%", f"%{search}%", f"%{search}%"])
@@ -107,34 +107,34 @@ def user_list():
                 base_query += " AND status = %s"
                 params.append(status)
 
-            # 计算总数
+            # Calculate total count
             count_query = "SELECT COUNT(*) AS total FROM (" + base_query + ") AS sub"
             cursor.execute(count_query, params)
             total_records = cursor.fetchone()['total']
             total_pages = (total_records + per_page - 1) // per_page
 
-            # 添加分页
+            # Add pagination
             base_query += " ORDER BY created_at DESC LIMIT %s OFFSET %s"
             offset = (page - 1) * per_page
             params.extend([per_page, offset])
 
-            # 获取当前页数据
+            # Fetch current page data
             cursor.execute(base_query, params)
             users = cursor.fetchall()
 
-            # 角色选项
+            # Role options
             role_options = [
-                ('', '所有角色'),
-                ('student', '学生'),
-                ('employer', '企业'),
-                ('admin', '管理员')
+                ('', 'All Roles'),
+                ('student', 'Student'),
+                ('employer', 'Employer'),
+                ('admin', 'Admin')
             ]
 
-            # 状态选项
+            # Status options
             status_options = [
-                ('', '所有状态'),
-                ('active', '激活'),
-                ('inactive', '禁用')
+                ('', 'All Statuses'),
+                ('active', 'Active'),
+                ('inactive', 'Inactive')
             ]
 
             return render_template('admin/users.html',
@@ -150,7 +150,7 @@ def user_list():
                                    total_records=total_records)
 
     except Exception as e:
-        flash(f'加载用户列表失败: {str(e)}', 'danger')
+        flash(f'Failed to load user list: {str(e)}', 'danger')
         return render_template('admin/users.html', users=[])
     finally:
         connection.close()
@@ -158,26 +158,26 @@ def user_list():
 
 @bp.route('/users/<int:user_id>/status', methods=['POST'])
 def change_user_status(user_id):
-    """更改用户状态"""
+    """Change user status"""
     new_status = request.form.get('status')
 
     if new_status not in ['active', 'inactive']:
-        flash('无效的状态值', 'danger')
+        flash('Invalid status value', 'danger')
         return redirect(url_for('admin.user_list'))
 
     try:
         connection = db.get_db_conn()
         with connection.cursor() as cursor:
-            # 更新用户状态
+            # Update user status
             sql = "UPDATE users SET status = %s WHERE user_id = %s"
             cursor.execute(sql, (new_status, user_id))
             connection.commit()
 
-            flash(f'用户状态已{"激活" if new_status == "active" else "禁用"}', 'success')
+            flash(f'User status has been {"activated" if new_status == "active" else "deactivated"}', 'success')
             return redirect(url_for('admin.user_list'))
 
     except Exception as e:
-        flash(f'更新用户状态失败: {str(e)}', 'danger')
+        flash(f'Failed to update user status: {str(e)}', 'danger')
         return redirect(url_for('admin.user_list'))
     finally:
         connection.close()
@@ -185,19 +185,19 @@ def change_user_status(user_id):
 
 @bp.route('/profile/password', methods=['GET', 'POST'])
 def change_password():
-    """修改密码"""
+    """Change password"""
     user_id = session.get('user_id')
 
     try:
         connection = db.get_db_conn()
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-            # 获取当前用户信息
+            # Fetch current user information
             sql = "SELECT * FROM users WHERE user_id = %s"
             cursor.execute(sql, (user_id,))
             user = cursor.fetchone()
 
             if not user:
-                flash('未找到用户信息', 'danger')
+                flash('User information not found', 'danger')
                 return redirect(url_for('admin.dashboard'))
 
             if request.method == 'POST':
@@ -205,39 +205,39 @@ def change_password():
                 new_password = request.form.get('new_password')
                 confirm_password = request.form.get('confirm_password')
 
-                # 验证当前密码
+                # Verify current password
                 if not check_password_hash(user['password_hash'], current_password):
-                    flash('当前密码不正确', 'danger')
+                    flash('Current password is incorrect', 'danger')
                     return render_template('admin/change_password.html', user=user)
 
-                # 验证新密码
+                # Verify new password
                 if new_password != confirm_password:
-                    flash('新密码和确认密码不一致', 'danger')
+                    flash('New password and confirm password do not match', 'danger')
                     return render_template('admin/change_password.html', user=user)
 
-                # 验证密码强度
+                # Verify password strength
                 if len(new_password) < 8:
-                    flash('密码长度至少为8个字符', 'danger')
+                    flash('Password must be at least 8 characters long', 'danger')
                     return render_template('admin/change_password.html', user=user)
 
-                # 验证新密码是否与旧密码相同
+                # Verify new password is not the same as the old password
                 if check_password_hash(user['password_hash'], new_password):
-                    flash('新密码不能与当前密码相同', 'danger')
+                    flash('New password cannot be the same as the current password', 'danger')
                     return render_template('admin/change_password.html', user=user)
 
-                # 更新密码
+                # Update password
                 new_password_hash = generate_password_hash(new_password)
                 update_sql = "UPDATE users SET password_hash = %s WHERE user_id = %s"
                 cursor.execute(update_sql, (new_password_hash, user_id))
                 connection.commit()
 
-                flash('密码已更新', 'success')
+                flash('Password has been updated', 'success')
                 return redirect(url_for('admin.profile'))
 
             return render_template('admin/change_password.html', user=user)
 
     except Exception as e:
-        flash(f'修改密码失败: {str(e)}', 'danger')
+        flash(f'Failed to change password: {str(e)}', 'danger')
         return render_template('admin/change_password.html')
     finally:
         connection.close()
