@@ -1,3 +1,4 @@
+```
 InternLink/
 ├── app.py                                 # Entrypoint: calls create_app() and runs the server
 ├── config.py                              # App configuration (DB creds, secret key, etc.)
@@ -31,3 +32,4 @@ InternLink/
     └── uploads/                           # user-uploaded files
         ├── avatars/
         └── resumes/
+```
