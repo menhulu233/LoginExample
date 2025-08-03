@@ -1,0 +1,5 @@
+Flask
+pymysql
+flask_bcrypt
+flask_wtf
+email_validator
